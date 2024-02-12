@@ -1,2 +1,2 @@
-# compute
-A repo for documentation around using compute.
+# Compute
+A repo for documentation related to compute.
