@@ -1,6 +1,6 @@
 
 # Nebula Onboarding
-A guide to access, set up, and use the ECE Nebula GPU cluster on campus.
+A guide to access, set up, and use the ECE Nebula GPU cluster.
 
 Throughout this guide:
 - `username` and `password` refer to the username and password given to you by an admin.
@@ -14,7 +14,7 @@ You must do this set up only once.
 1. Contact an admin for a `username` and `password`. You can reach admins in the compute channel on the WAT.ai Discord server.
 2. Set up and connect to the UW VPN. [Link](https://uwaterloo.ca/mechanical-mechatronics-engineering-information-technology/virtual-private-network-vpn) to guide.
 3. SSH into your account. It is up to you how to do this.
-    * We recommend the VS code remote connection extension [here](https://code.visualstudio.com/docs/remote/ssh) as follows:
+    * A good option is VS code remote connection [here](https://code.visualstudio.com/docs/remote/ssh).
         * Install the extension.
         * Press Ctrl+Shift+P.
         * Start typing and select: Remote-SSH: Connect to Host
@@ -28,8 +28,8 @@ You must do this set up only once.
 1. If this is your first time logging in, you will see two files already in the directory:
     * `test.py`: A sample python file.
     * `test_job.sh`: A sample bash for executing a job.
-2. You can run a test job. Execute `sbatch test_job.sh`. You'll see some confirmation your job has been submitted like `Submitted batch job jobid`
-3. Your job has been submitted to a compute node for execution. You can see your job status in the queue by running `squeue`. This will show you the jobs currently running, and you should see that one of them is yours. The ouput looks like:
+2. Run a test job by executing `sbatch test_job.sh`. You'll see some confirmation your job has been submitted: `Submitted batch job jobid`
+3. Your job has been submitted to a compute node for execution. View your job status in the queue by running `squeue`. This will show you the jobs currently running. One of them should be yours. The output looks like:
     * ```text
       JOBID PARTITION NAME USER ST TIME NODES NODELIST(REASON)
       20356 smallcard test user_name R 0:02 1 ece-nebula06
@@ -37,32 +37,39 @@ You must do this set up only once.
     * Note that the test task is short, so it may have already finished running if you take long to run `squeue`.
 4. To get constantly updated info, run `watch -n 1 squeue`. This will continually call squeue every second. Execute the watch and keep it open until your job goes away. This indicates it is finished. Use CTRL+C to exit the watch.
 
-5. The stdout output (where you can see print statements and errors from code execution) of your job are saved to .out files. These files have name: `slurm-jobid.out`. Where these files are saved may vary, but it is likely they are in `/slurm_nfs/username/job_output/`.
-6. You can execute `cat name-of-your-out-file` to see the stdout of your job.
+5. Your code is running on a different computer than the one you are SSH'ed into, hence, you won't see your code output in the terminal. The stdout output (print statements and errors from code execution) is saved to .out files. These files have name: `slurm-jobid.out`. The location of these files depends on your SLURM configuration, but it is likely they are in `/slurm_nfs/username/job_output/`.
+6. You can execute `cat name-of-your-out-file.out` to see the stdout of your job.
 
 # Running jobs
 Above you ran an example job. However, to run actual jobs, you'll need to set up your environment (like libraries) and copy over your code files.
-1. As outlined above, connect to VPN, SSH, and cd into `/slurm_nfs/username`.
+1. As outlined in the set up section, connect to VPN, SSH, and cd into `/slurm_nfs/username`.
 2. Create a python virtual env. `python3 -m venv envname`
 3. Activate the environment. `source envname/bin/activate`
-4. Install packages. You can do this using pip or however else you want.
-    * If you have a `requirements.txt` file `python -m pip install -r requirements.txt`
-    * You can run any pip commands you want. For example, installing PyTorch `pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118`
+4. Install packages. You can use `pip` or whatever else you want.
+    * If you have a `requirements.txt` file `pip install -r requirements.txt`
+    * You can run any pip commands you want. For example, installing PyTorch `pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118`
 5. Get your code. You can create or copy files. The easiest and most robust method is to git clone a repo with all the code you need.
 6. Storing data and results.
-    * If applicable, get your data on the cluster. This is highly dependent on where your data is stored and how it is accessed. If you need help, reach out in the compute channel on the WAT.ai discord.
+    * If applicable, load your data onto the cluster. This is highly dependent on where your data is stored and how it is accessed. If you need help, reach out in the compute channel on the WAT.ai discord.
     * Small files (e.g. csvs, logs, .out files, etc.) can be stored in `/slurm_nfs/username/`
     * Large files (e.g. datasets, big model checkpoints) should be stored in `/datasets_nfs/username/`
     * *THIS CLUSTER IS NOT A DATA STORE. LARGE FILES NOT ACCESSED FOR OVER A WEEK ARE SUBJECT TO DELETION*. It is your responsibility to ensure that your data, trained AI models, and other large files are stored in a safe place.
-7. Modify training scripts to match paths on the cluster. (paths for data, logs, results, configs, etc)
+7. Modify scripts to match paths on the cluster. (paths for data, logs, results, configs, etc)
 8. Configure your job shell script. You can use the `test_job.sh` file as a starting point. You have to:
     * Configure SLURM parameters. Refer to Requesting Resources below for more details.
     * Choose and activate your python venv.
     * Define any environment variables.
     * If applicable, do any other set up (examples: spin up a database if you are using one).
     * Run your code. For ML workloads this will likely be a .py script, but it could technically be anything.
-    * If applicable, turn off and clean up any other running applications.
+    * If applicable, turn off and clean up any other running applications or resources.
     * Deactivate the python venv.
+9. Execute `sbatch name-of-your-slurm-bash-script.sh`. You'll see confirmation your job has been submitted: `Submitted batch job jobid`
+10. As outlined earlier, you can use `squeue` and `watch -n 1 squeue` to monitor your task.
+11. As outlined earlier, the stdout of your job is saved to .out.
+   * The files have names: `slurm-jobid.out`.
+   * The location of these files depends on your SLURM configuration, but it is likely they are in `/slurm_nfs/username/job_output/`.
+   * You can execute `cat name-of-your-out-file.out` to see the stdout of your job.
+12. Run `tail -f name-of-your-out-file.out` after executing your job to see logs in real time. Beware that this command may also print buffers that have nothing do with your code.
 
 # Understanding the Cluster
 
