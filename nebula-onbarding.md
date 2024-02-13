@@ -24,7 +24,7 @@ You must do this set up only once.
 4. You are now logged into the `/home/username` directory. However, this is not where jobs are executed from. cd to `/slurm_nfs/username`. This is your directory in the network file system (NFS). 
 
   
-# Optional. Recommended if first time.
+# Running a Test Job (Optional, but recommended for first time)
 1. If this is your first time logging in, you will see two files already in the directory:
     * `test.py`: A sample python file.
     * `test_job.sh`: A sample bash for executing a job.
@@ -40,7 +40,7 @@ You must do this set up only once.
 5. Your code is running on a different computer than the one you are SSH'ed into, hence, you won't see your code output in the terminal. The stdout output (print statements and errors from code execution) is saved to .out files. These files have name: `slurm-jobid.out`. The location of these files depends on your SLURM configuration, but it is likely they are in `/slurm_nfs/username/job_output/`.
 6. You can execute `cat name-of-your-out-file.out` to see the stdout of your job.
 
-# Running jobs
+# Running Jobs
 Above you ran an example job. However, to run actual jobs, you'll need to set up your environment (like libraries) and copy over your code files.
 1. As outlined in the set up section, connect to VPN, SSH, and cd into `/slurm_nfs/username`.
 2. Create a python virtual env. `python3 -m venv envname`
