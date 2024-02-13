@@ -1,6 +1,6 @@
 
 # Nebula Guide
-A guide to access, set up, and use the ECE Nebula GPU cluster.
+A guide to access, set up, and use the ECE Nebula GPU cluster. This is a [slurm](https://slurm.schedmd.com/overview.html)-managed Ubuntu Linux system. If you've never used Linux command line before, [here's a starter guide to Ubuntu](https://ubuntu.com/tutorials/command-line-for-beginners#1-overview). This guide will cover basics of using slurm to run jobs on the cluster.
 
 Throughout this guide:
 - `username` and `password` refer to the username and password given to you by an admin.
@@ -45,7 +45,7 @@ Above you ran an example job. However, to run actual jobs, you'll need to set up
 1. As outlined in the set up section, connect to VPN, SSH, and cd into `/slurm_nfs/username`.
 2. Create a python virtual env. `python3 -m venv envname`
 3. Activate the environment. `source envname/bin/activate`
-4. Install packages. You can use `pip` or whatever else you want.
+4. Install packages. You should use `pip` or another lightweight package manager to install requirements (i.e. avoid conda).
     * If you have a `requirements.txt` file `pip install -r requirements.txt`
     * You can run any pip commands you want. For example, installing PyTorch `pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118`
 5. Get your code. You can create or copy files. The easiest and most robust method is to git clone a repo with all the code you need.
