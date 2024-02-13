@@ -31,6 +31,7 @@ You must do this set up only once.
       JOBID PARTITION NAME USER ST TIME NODES NODELIST(REASON)
       20356 smallcard test user_name R 0:02 1 ece-nebula06
       ```
+    * Note that the test task is short, so it may have already finished running if you take long to run `squeue`.
 4. To get constantly updated info, run `watch -n 1 squeue`. This will continually call squeue every second. Execute the watch and keep it open until your job goes away. This indicates it is finished. Use CTRL+C to exit the watch.
 
 5. The stdout output (where you can see print statements and errors from code execution) of your job are saved to .out files. These files have name: `slurm-jobid.out`. Where these files are saved may vary, but it is likely they are in `/slurm_nfs/username/job_output/`.
@@ -51,10 +52,8 @@ Above you ran an example job. However, to run actual jobs, you'll need to set up
     * Large files (e.g. datasets, big model checkpoints) should be stored in `/datasets_nfs/username/`
     * *THIS CLUSTER IS NOT A DATA STORE. LARGE FILES NOT ACCESSED FOR OVER A WEEK ARE SUBJECT TO DELETION*. It is your responsibility to ensure that your data, trained AI models, and other large files are stored in a safe place.
 8. Modify training scripts to match paths on the cluster. (paths for data, logs, results, configs, etc)
-9. Run the minimal test script. TODO: CREATE AND TEST THIS
 10. Set up your job shell script. You can rename and use the `test_job.sh` file.
     * TODO: fill in what this file should include. and how to configure that
-    * TODO: create the test files and add them to this repo
     * TODO: Add steps to run job and do the tail trick
     * TODO: add information on how all this works (cop paste from prof mikes stuff)
     * TODO: test these steps
