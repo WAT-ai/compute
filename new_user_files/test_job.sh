@@ -8,7 +8,6 @@
 #SBATCH --mem-per-cpu=12G         # memory per cpu-core - unless you're doing something obscene the default here is fine. This is RAM, not VRAM, so it's like storage for your dataset
 #SBATCH --time=00:10:00          # total run time limit - You can increase this however you wish, depending on your job's needs. However, it is a good idea to keep it to what you need, in case your job goes off
 #SBATCH --output=/slurm_nfs/test_user/job_output/%j.out
-#the rails and you can't stop it, this will stop it automatically 
 
 #If you are using your own custom venv, replace mine with yours. Otherwise, stick to this default. It has torch, transformers, accelerate and a bunch of others. I'm happy to add more common libraries
 source /slurm_nfs/transformers/bin/activate

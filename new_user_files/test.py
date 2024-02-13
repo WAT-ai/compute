@@ -12,3 +12,5 @@ input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to("cuda")
 
 outputs = model.generate(input_ids)
 print(tokenizer.decode(outputs[0]))
+
+print("Completed test job")
