@@ -31,7 +31,7 @@ You must do this set up only once.
 3. Your job has been submitted to a compute node for execution. View your job status in the queue by running `squeue`. This will show you the jobs currently running. One of them should be yours. The output looks like:
     * ```text
       JOBID PARTITION NAME USER ST TIME NODES NODELIST(REASON)
-      20356 smallcard test user_name R 0:02 1 ece-nebula06
+      20356 smallcard test username R 0:02 1 ece-nebula06
       ```
     * Note that the test task is short, so it may have already finished running if you take long to run `squeue`.
 4. To get constantly updated info, run `watch -n 1 squeue`. This will continually call squeue every second. Execute the watch and keep it open until your job goes away. This indicates it is finished. Use CTRL+C to exit the watch.
@@ -51,7 +51,7 @@ Above you ran an example job. However, to run actual jobs, you'll need to set up
 6. Storing data and results.
     * If applicable, load your data onto the cluster. This is highly dependent on where your data is stored and how it is accessed. If you need help, reach out in the compute channel on the WAT.ai discord.
     * Small files (e.g. csvs, logs, .out files, etc.) can be stored in `mnt/slurm_nfs/username/`
-    * Large files (e.g. datasets, big model checkpoints) should be stored in `/datasets_nfs/username/`
+    * Large files (e.g. datasets, big model checkpoints) should be stored in `mnt/datasets_nfs/username/`
     * *THIS CLUSTER IS NOT A DATA STORE. LARGE FILES NOT ACCESSED FOR OVER A WEEK ARE SUBJECT TO DELETION*. It is your responsibility to ensure that your data, trained AI models, and other large files are stored in a safe place.
 7. Modify scripts to match paths on the cluster. (paths for data, logs, results, configs, etc)
 8. Configure your job shell script. You can use the `test_job.sh` file as a starting point. You have to:
@@ -72,7 +72,7 @@ Above you ran an example job. However, to run actual jobs, you'll need to set up
 
 # Understanding the Cluster
 
-The ece-nebula cluster is made up of two types of computers, from the user’s perspective: the login node and the compute nodes. Users are allowed to log in only to the login node, which node does not have any GPUs and should never perform computation for your job.
+The ece-nebula cluster is made up of two types of computers, from the user’s perspective: the login node and the compute nodes. Users are allowed to log in only to the login node, which does not have any GPUs and should never perform computation for your job.
 
 When you submit a job, the login node searches for a compute node that meets your resource requirements, and if one is found it will allocate that node to your job. If none are currently available but your resource request is valid, your job gets put into the queue and will run once resources are free. Finally, if no node exists on the cluster that meets your requirements, you will see an error when you try to submit the job.
 
@@ -81,14 +81,14 @@ We’ll go into requesting resources in more detail below, but first we need to 
 ## The Network File Share
 Compute nodes and the login node are physically different computers. All of your work, files, and datasets must be on a networked file share in order for the login node and the compute nodes to perform your job. For instance, if you were to put a python script you wanted to run on a folder that the compute node can’t see, there is no way for the node to run your job, and you will see an error in the output file.
 
-This is why we had to navigate to the specific folder. The folder `mnt/slurm_nfs/user_name` is your folder that is accessible to all nodes in the cluster. You can make subfolders in this folder, but you need to make sure that all of your code goes there. The administrators of the cluster will periodically remove accounts that have not been accessed in six months. Therefore, it is best not to store data on this cluster long-term.
+This is why we had to navigate to the specific folder. The folder `mnt/slurm_nfs/username` is your folder that is accessible to all nodes in the cluster. You can make subfolders in this folder, but you need to make sure that all of your code goes there. The administrators of the cluster will periodically remove accounts that have not been accessed in six months. Therefore, it is best not to store data on this cluster long-term.
 
 ### The /datasets_nfs Share
 The folder `mnt/slurm_nfs` physically sits on the login node, which (as of January 2024) has limited storage of about 400GB. Although that may sound like a lot, for a multi-user system like this one it is in fact very small.
 
-If you are going to work with large datasets (even a few GB is considered “large” given the number of users), you should put your datasets into the `/datasets_nfs` folder instead of `mnt/slurm_nfs`. This is as simple as copying the dataset into the `/datasets_nfs` folder from your local machine.
+If you are going to work with large datasets (even a few GB is considered “large” given the number of users), you should put your datasets into the `mnt/datasets_nfs` folder instead of `mnt/slurm_nfs`. This is as simple as copying the dataset into the `mnt/datasets_nfs` folder from your local machine.
 
-The `/datasets_nfs` folder is also networked to all of the compute nodes and the login node. The major difference is that this folder sits on a computer with 1TB of storage space, and cluster administrators will clean it more frequently – any file not accessed within the last week may be subject to deletion if the drive gets full. Therefore, `/datasets_nfs` should never be used for long-term storage.
+The `mnt/datasets_nfs` folder is also networked to all of the compute nodes and the login node. The major difference is that this folder sits on a computer with 1TB of storage space, and cluster administrators will clean it more frequently – any file not accessed within the last week may be subject to deletion if the drive gets full. Therefore, `mnt/datasets_nfs` should never be used for long-term storage.
 
 In the future we hope to expand the storage capacity of the cluster, but you should be aware that the cluster will never be a place to store huge amounts of data and AI models. We simply don’t have the resources to provide that service to all UW engineering undergrads.
 
