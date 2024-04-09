@@ -1,4 +1,3 @@
-
 # Nebula Guide
 A guide to access, set up, and use the ECE Nebula GPU cluster. This is a [slurm](https://slurm.schedmd.com/overview.html)-managed Ubuntu Linux system. If you've never used Linux command line before, [here's a starter guide to Ubuntu](https://ubuntu.com/tutorials/command-line-for-beginners#1-overview). This guide will cover basics of using slurm to run jobs on the cluster.
 
