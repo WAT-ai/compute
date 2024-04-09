@@ -1,5 +1,5 @@
 # Nebula Guide
-A guide to access, set up, and use the ECE Nebula GPU cluster. This is a [slurm](https://slurm.schedmd.com/overview.html)-managed Ubuntu Linux system. If you've never used Linux command line before, [here's a starter guide to Ubuntu](https://ubuntu.com/tutorials/command-line-for-beginners#1-overview). This guide will cover basics of using slurm to run jobs on the cluster.
+A guide to access, set up, and use the ECE Nebula GPU cluster. This is a [SLURM](https://slurm.schedmd.com/overview.html)-managed Ubuntu Linux system. If you've never used Linux command line before, [here's a starter guide to Ubuntu](https://ubuntu.com/tutorials/command-line-for-beginners#1-overview). This guide will cover basics of using slurm to run jobs on the cluster.
 
 Throughout this guide:
 - `username` and `password` refer to the username and password given to you by an admin.
@@ -7,6 +7,11 @@ Throughout this guide:
 - `envname` refers to the name of your python3 environment. You choose this.
 
 _Note: much of the following text was lifted from Professor Mike's ECE_NEBULA_NON_ADMIN_USERGUIDE.pdf_
+
+# Purpose and Limitations
+The main purpose of providing this compute is to allow WAT.ai teams who may need to run intensive training jobs that may be beyond the resources available on platforms such as Google Colab, Kaggle, etc. Please confirm with the WAT.ai compute admins whether your intended use of the server is okay, even if you already have access. We need to keep track of how our team is using the cluster.
+
+Due to the way the SLURM system is setup, there are also some limitations. SLURM systems request compute resources on a job-by-job basis, so this server is not appropriate for continuous deployment of production systems. SLURM jobs are executed on remote compute notes that users typically do not have shell access to. The login compute node has low compute power, so should not be used to run intensive machine learning workloads. As such, developing training code is quite challenging on the cluster, since tools like Jupyter Notebooks will not work. It is highly recommended that users have their model training code and datasets prepared beforehand such that they can be copied to the cluster's filesystem and run with minimal editing.
 
 # Set up
 You must do this set up only once.
